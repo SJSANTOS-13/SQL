@@ -1,0 +1,111 @@
+Create Table Planetas(
+  IdPlanetas int NOT NULL,
+  Nome varchar(50) NOT NULL,
+  Rotacao float NOT NULL,
+  Orbita float NOT NULL,
+  Diametro float NOT NULL,
+  Clima varchar(50) NOT NULL,
+  População int NOT NULL,
+)
+GO
+ALTER TABLE Planetas ADD CONSTRAINT PK_Planetas PRIMARY KEY (IdPlaneta);
+GO
+CREATE TABLE Naves(
+  IdNave int NOT NULL,
+  Nome varchar(100) NOT NULL,
+  Modelo varchar(150) NOT NULL,
+  Passageiros int NOT NULL,
+  Carga float NOT NULL,
+  Classe varchar(100) NOT NULL,
+)
+GO
+ALTER TABLE Naves ADD CONSTRAINT PK_Naves PRIMARY KEY (IdNave);
+GO
+
+CREATE TABLE Pilotos(
+  IdPiloto int NOT NULL,
+  Nome varchar(200) NOT NULL,
+  AnoNascimento varchar(10) NOT NULL,
+  IdPlaneta int NOT NULL,
+)
+GO
+ALTER TABLE Pilotos ADD CONSTRAINT PK_Pilotos PRIMARY KEY (IdPiloto);
+GO
+ALTER TABLE Pilotos ADD CONSTRAINT FK_Pilotos_Planetas FOREIGN KEY(IdPlanetas)
+REFERENCES Planetas (IdPlanetas)
+GO
+CREATE TABLE PilotosNavs(
+  IdPiloto int NOT NULL,
+  IdNave int NOT NULL,
+  FlagAutorizado bit NOT NULL,  
+)
+GO
+ALTER TABLE PilotosNaves ADD CONSTRAINT PK_Pilotos PRIMARY kEY (IdPiloto,IdNave);
+GO
+ALTER TABLE PilotosNaves ADD CONSTRAINT FK_PilotosNaves_Pilotos FOREIGN KEY(IdPiloto)
+REFERENCES Naves(IdNave)
+GO
+ALTER TABLE PilotosNaves ADD CONSTRAINT DF_PilotodosNaves_FlagAutorizado DEFAULT (1) FOR FlagAutorizado
+GO
+CREATE TABLE HistoricoViagens(
+  IdNave int NOT NULL,
+  IdPiloto int NOT NULL,
+  DtSaida datetime NOT NULL,
+  DtChegada NOT NULL,
+)
+GO
+
+ALTER TABLE HistoricoViagens ADD CONSTRAINT FK_HistoricoViagens_PilotosNaves FOREIGN KEY(IdPiloto,IdNave)
+REFERENCES PilotosNaves (IdPiloto, IdNave)
+GO
+ALTER TABLE HistoricoViagens CHECK CONSTRAINT FK_HistoricoViagens_PilotosNaves
+
+
+
+select * from Pilotos where Nome = 'Sara Santos'
+
+select * from Pilotos where Nome like 'Sara%'
+
+
+select * from Planetas
+select * from Naves
+select * from PilotosNaves
+select * from HistoricoViagens
+
+insert HistoricoViagens(IdNace, IdPiloto, DtSaida)
+values 1, 1, GetDate())
+
+//agrupar as informações das tabelas
+select t1.*,
+       t2.Nome,
+       t3.Nome
+from HistoricoViagens t1
+inner join Pilotos t2
+on t1.IdPiloto = t2.IdPiloto
+
+
+inner join Naves t2
+on t1.IdNave = t3.IdNave
+
+
+//condição de verificaçao
+
+select case
+          where count(DtSaida) <> count(DtChegada) then 1
+          else 0
+        end Viajando,
+        count(DtSaida),
+        count(DtChegada)
+from HistoquicoViagens
+where IdPiloto = 14
+
+select * from HistoricoViagens
+
+select * from PilotosNaves where IdPiloto = 14 and IdNave = 10
+
+
+
+
+
+
+
